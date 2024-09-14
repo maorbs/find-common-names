@@ -26,16 +26,17 @@ public class NamesPatternMatcher implements Callable<SearchResult> {
 	@Override
 	public SearchResult call() throws Exception {
 		
-		SearchResult sr = new SearchResult();
+		final SearchResult sr = new SearchResult();
 		String[] linesText = text.split(System.lineSeparator());
 		for (int i = 0; i < linesText.length; i++) {
-	        for (Map.Entry<String, Pattern> pattenMap : regexNamesMap.entrySet()) {
-	        	String lowerCaseLine = linesText[i].toLowerCase();
-				Matcher matcher = pattenMap.getValue().matcher(lowerCaseLine);
+			final String lw = linesText[i].toLowerCase();
+			final int index = i;
+			regexNamesMap.entrySet().parallelStream().forEach(entry->{
+				Matcher matcher = entry.getValue().matcher(lw);
 	        	while (matcher.find()) {
-					sr.appendOrCreateResult(pattenMap.getKey(), new ResultOffset(startLineOffset + i + 1, matcher.start()));
+					sr.appendOrCreateResult(entry.getKey(), new ResultOffset(startLineOffset + index + 1, matcher.start()));
 	        	}
-	        }
+			});
 		}
 		return sr;
 	}
