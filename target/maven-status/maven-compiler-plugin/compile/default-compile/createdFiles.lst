@@ -1,4 +1,5 @@
+com\task\services\CommonNamesService.class
+com\task\Main.class
 com\task\matchers\NamesPatternMatcher.class
 com\task\model\ResultOffset.class
-com\task\Main.class
 com\task\model\SearchResult.class
